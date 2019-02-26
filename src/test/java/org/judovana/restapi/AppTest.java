@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import org.junit.Test;
 import org.judovana.restapi.App;
+import org.junit.Assert;
 
 /**
  * Unit test for simple App.
@@ -57,8 +58,31 @@ public class AppTest {
         TestServer s = new TestServer();
         ByteArrayOutputStream answers = new ByteArrayOutputStream();
         App app = new App("http://localhost:" + s.port, 1, new PrintStream(answers));
-        app.pool(10);
-        System.out.println(new String(answers.toByteArray(), Charset.forName("utf-8")));
+        app.pool(3);
+        String toCheck = new String(answers.toByteArray(), Charset.forName("utf-8"));
+        s.hs.stop(1);
+        Assert.assertEquals(1, countSubstrings(toCheck, "1 -"));
+        Assert.assertEquals(0, countSubstrings(toCheck, "2 -"));//this is important
+        Assert.assertEquals(0, countSubstrings(toCheck, "3 -"));
+        Assert.assertEquals(1, countSubstrings(toCheck, "20 -"));
+        Assert.assertEquals(1, countSubstrings(toCheck, "40 -"));
+        Assert.assertEquals(0, countSubstrings(toCheck, "80 -"));
 
+    }
+
+    private static int countSubstrings(String str, String findStr) {
+        int lastIndex = 0;
+        int count = 0;
+
+        while (lastIndex != -1) {
+
+            lastIndex = str.indexOf(findStr, lastIndex);
+
+            if (lastIndex != -1) {
+                count++;
+                lastIndex += findStr.length();
+            }
+        }
+        return count;
     }
 }
