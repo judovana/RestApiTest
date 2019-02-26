@@ -21,34 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.judovana.restapi.beans;
+package org.judovana.restapi;
+
+import java.util.HashSet;
+import java.util.Set;
+import org.judovana.restapi.beans.Loan;
 
 /**
  *
  * @author jvanek
  */
-public class Loan {
+public class Db {
 
-    private String id;
-    private boolean topped;
-    private String datePublished;
-    private boolean published;
-    private boolean questionsAllowed;
-    private boolean multicash;
+    private final Set<Integer> db = new HashSet<>();
 
-    public String getId() {
-        return id;
+    public Db() {
     }
 
-    public String getDatePublished() {
-        return datePublished;
+    public void add(Loan l) {
+        add(l.getId());
     }
-    
-    
 
-    @Override
-    public String toString() {
-        return id + " - " + datePublished;
+    public void add(String id) {
+        db.add(Integer.valueOf(id));
+    }
+
+    public boolean contains(Loan l) {
+        return contains(l.getId());
+    }
+
+    public boolean contains(String id) {
+        return db.contains(Integer.valueOf(id));
     }
 
 }

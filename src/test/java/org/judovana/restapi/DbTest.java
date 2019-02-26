@@ -21,34 +21,26 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.judovana.restapi.beans;
+package org.judovana.restapi;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  *
  * @author jvanek
  */
-public class Loan {
+public class DbTest {
 
-    private String id;
-    private boolean topped;
-    private String datePublished;
-    private boolean published;
-    private boolean questionsAllowed;
-    private boolean multicash;
-
-    public String getId() {
-        return id;
+    @Test
+    public void checkDb() {
+        Db d = new Db();
+        Assert.assertEquals(false, d.contains("0"));
+        d.add("1");
+        Assert.assertEquals(false, d.contains("0"));
+        Assert.assertEquals(true, d.contains("1"));
+        d.add("0");
+        Assert.assertEquals(true, d.contains("0"));
+        Assert.assertEquals(true, d.contains("1"));
     }
-
-    public String getDatePublished() {
-        return datePublished;
-    }
-    
-    
-
-    @Override
-    public String toString() {
-        return id + " - " + datePublished;
-    }
-
 }
