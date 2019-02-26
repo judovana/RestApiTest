@@ -21,48 +21,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.judovana.restapi.connection;
-
-import com.google.gson.Gson;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.Charset;
-import org.judovana.restapi.beans.Loan;
+package org.judovana.restapi.beans;
 
 /**
  *
  * @author jvanek
  */
-public class Provider {
+public class Loan {
 
-    private final URL api;
+    String id;
+    boolean topped;
+    String datePublished;
+    boolean published;
+    boolean questionsAllowed;
+    boolean multicash;
 
-    private Provider(URL api) {
-        this.api = api;
-    }
-
-    public static Provider create(String from) throws MalformedURLException {
-        //provider is only for interesting fields
-        return new Provider(new URL(from + "?fields=id,datePublished"));
-    }
-
-    public Loan[] readLoans() throws IOException {
-        StringBuilder sb = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(api.openStream(), Charset.forName("utf-8")))) {
-            while (true) {
-                String s = br.readLine();
-                if (s == null) {
-                    break;
-                }
-                sb.append(s);
-            }
-        }
-        Gson gson = new Gson();
-        Loan[] loans = gson.fromJson(sb.toString(), Loan[].class);
-        return loans;
+    @Override
+    public String toString() {
+        return id + " - " + datePublished;
     }
 
 }

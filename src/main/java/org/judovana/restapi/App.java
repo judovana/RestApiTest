@@ -2,12 +2,10 @@ package org.judovana.restapi;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Arrays;
+import org.judovana.restapi.beans.Loan;
 import org.judovana.restapi.connection.Provider;
 
-/**
- * Hello world!
- *
- */
 public class App {
 
     public static void main(String[] args) throws MalformedURLException, IOException {
@@ -15,6 +13,7 @@ public class App {
             throw new RuntimeException("Expected exactly one argument - URL of api");
         }
         Provider provider = Provider.create(args[0]);
-        provider.dummyAttempt();
+        Loan[] loans = provider.readLoans();
+        System.out.println(Arrays.toString(loans));
     }
 }
