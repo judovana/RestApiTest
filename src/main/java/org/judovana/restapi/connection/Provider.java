@@ -30,6 +30,9 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import org.judovana.restapi.beans.Loan;
 
 /**
@@ -44,12 +47,16 @@ public class Provider {
         this.api = api;
     }
 
-    public static Provider create(String from) throws MalformedURLException {
+    public static Provider create(String from, int ageInMinutes) throws MalformedURLException {
         //provider is only for interesting fields
-        return new Provider(new URL(from + "?fields=id,datePublished"));
+        return new Provider(new URL(from + "?datePublished__gt=" + getAge(ageInMinutes) + "&fields=id,datePublished"));
     }
 
     public Loan[] readLoans() throws IOException {
+        //no paging via cool
+        //X-Page: N and X-Size: KL 
+        //by cool answer of X-Total: XY
+        //as I have never seen more then three loans appearing in last five minutes
         StringBuilder sb = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new InputStreamReader(api.openStream(), Charset.forName("utf-8")))) {
             while (true) {
@@ -63,6 +70,16 @@ public class Provider {
         Gson gson = new Gson();
         Loan[] loans = gson.fromJson(sb.toString(), Loan[].class);
         return loans;
+    }
+
+    static String getAge(int ageInMinutes) {
+        return getAge(LocalDateTime.now(), ageInMinutes);
+    }
+
+    static String getAge(LocalDateTime base, int ageInMinutes) {
+        //lets expect our api provider is in our timezone for simplicity
+        LocalDateTime oldTime = base.minusMinutes(ageInMinutes);
+        return DateTimeFormatter.ISO_DATE_TIME.format(oldTime);
     }
 
 }

@@ -12,7 +12,8 @@ public class App {
         if (args.length != 1) {
             throw new RuntimeException("Expected exactly one argument - URL of api");
         }
-        Provider provider = Provider.create(args[0]);
+        //exercise - 5 minutes; but check last 6 minutes and check against db as there oculd be loan in the few milisicends the request took
+        Provider provider = Provider.create(args[0], 5);
         Loan[] loans = provider.readLoans();
         System.out.println(Arrays.toString(loans));
     }
