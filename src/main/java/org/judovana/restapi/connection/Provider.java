@@ -47,9 +47,9 @@ public class Provider {
         this.api = api;
     }
 
-    public static Provider create(String from, int ageInMinutes) throws MalformedURLException {
+    public static Provider create(String from, int ageInSeconds) throws MalformedURLException {
         //provider is only for interesting fields
-        return new Provider(new URL(from + "?datePublished__gt=" + getAge(ageInMinutes) + "&fields=id,datePublished"));
+        return new Provider(new URL(from + "?datePublished__gt=" + getAge(ageInSeconds) + "&fields=id,datePublished"));
     }
 
     public Loan[] readLoans() throws IOException {
@@ -72,13 +72,14 @@ public class Provider {
         return loans;
     }
 
-    static String getAge(int ageInMinutes) {
-        return getAge(LocalDateTime.now(), ageInMinutes);
+    
+    static String getAge(int ageInSeconds) {
+        return getAge(LocalDateTime.now(), ageInSeconds);
     }
 
     static String getAge(LocalDateTime base, int ageInMinutes) {
         //lets expect our api provider is in our timezone for simplicity
-        LocalDateTime oldTime = base.minusMinutes(ageInMinutes);
+        LocalDateTime oldTime = base.minusSeconds(ageInMinutes);
         return DateTimeFormatter.ISO_DATE_TIME.format(oldTime);
     }
 

@@ -39,7 +39,7 @@ public class ProviderTest {
     public void getAge() {
         //get age must return string in ISO format older by 5 seconds
         TemporalAccessor orig = DateTimeFormatter.ISO_DATE_TIME.parse("2019-02-26T08:10:30.281");
-        String s = Provider.getAge(LocalDateTime.from(orig), 5);
+        String s = Provider.getAge(LocalDateTime.from(orig), 5*60);
         Assert.assertEquals("2019-02-26T08:05:30.281", s);
     }
 

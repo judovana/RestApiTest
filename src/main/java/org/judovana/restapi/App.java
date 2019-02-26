@@ -13,32 +13,33 @@ public class App {
         if (args.length != 1) {
             throw new RuntimeException("Expected exactly one argument - URL of api");
         }
-        new App(args[0], 5, System.out).pool();
+        new App(args[0], 5 * 60, System.out).pool();
     }
 
     public void pool() throws InterruptedException, IOException {
         Db db = new Db();
         //exercise - 5 minutes; but check last 6 minutes and check against db as there oculd be loan in the few milisicends the request took
         while (true) {
-            Provider provider = Provider.create(baseUrl, delay + 1);
+            Provider provider = Provider.create(baseUrl, delay + 60);
             Loan[] loans = provider.readLoans();
-            System.out.println(new Date()+": "+loans.length+" (unfliltered)");
+            out.println(new Date() + ": " + loans.length + " (unfliltered)");
+            out.println("New items: ");
             for (Loan loan : loans) {
                 if (!db.contains(loan)) {
                     db.add(loan);
                     out.println(loan);
                 }
             }
-            Thread.sleep(delay * 60 * 1000);
+            Thread.sleep(delay * 1000);
         }
     }
     private final String baseUrl;
     private final int delay;
     private final PrintStream out;
 
-    private App(String arg, int delayIniMinutes, PrintStream out) {
+    App(String arg, int delayInSeconds, PrintStream out) {
         this.baseUrl = arg;
-        this.delay = delayIniMinutes;
+        this.delay = delayInSeconds;
         this.out = out;
     }
 }
