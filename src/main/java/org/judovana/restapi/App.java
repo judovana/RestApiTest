@@ -22,7 +22,7 @@ public class App {
         while (true) {
             Provider provider = Provider.create(baseUrl, delay + 1);
             Loan[] loans = provider.readLoans();
-            System.out.println(new Date());
+            System.out.println(new Date()+": "+loans.length+" (unfliltered)");
             for (Loan loan : loans) {
                 if (!db.contains(loan)) {
                     db.add(loan);
