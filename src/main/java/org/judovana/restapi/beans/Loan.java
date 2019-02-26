@@ -29,14 +29,14 @@ package org.judovana.restapi.beans;
  */
 public class Loan {
 
-    private String id;
+    private Integer id;
     private boolean topped;
     private String datePublished;
     private boolean published;
     private boolean questionsAllowed;
     private boolean multicash;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 

@@ -35,12 +35,12 @@ public class DbTest {
     @Test
     public void checkDb() {
         Db d = new Db();
-        Assert.assertEquals(false, d.contains("0"));
-        d.add("1");
-        Assert.assertEquals(false, d.contains("0"));
-        Assert.assertEquals(true, d.contains("1"));
-        d.add("0");
-        Assert.assertEquals(true, d.contains("0"));
-        Assert.assertEquals(true, d.contains("1"));
+        Assert.assertEquals(false, d.contains(0));
+        d.add(1);
+        Assert.assertEquals(false, d.contains(0));
+        Assert.assertEquals(true, d.contains(1));
+        d.add(0);
+        Assert.assertEquals(true, d.contains(0));
+        Assert.assertEquals(true, d.contains(1));
     }
 }

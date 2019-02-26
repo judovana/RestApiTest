@@ -42,16 +42,16 @@ public class Db {
         add(l.getId());
     }
 
-    public void add(String id) {
-        db.add(Integer.valueOf(id));
+    public void add(Integer id) {
+        db.add(id);
     }
 
     public boolean contains(Loan l) {
         return contains(l.getId());
     }
 
-    public boolean contains(String id) {
-        return db.contains(Integer.valueOf(id));
+    public boolean contains(Integer id) {
+        return db.contains(id);
     }
 
 }
