@@ -13,13 +13,19 @@ public class App {
         if (args.length != 1) {
             throw new RuntimeException("Expected exactly one argument - URL of api");
         }
-        new App(args[0], 5 * 60, System.out).pool();
+        new App(args[0], 5 * 60, System.out).pool(-1);
     }
 
-    public void pool() throws InterruptedException, IOException {
+    /**
+     * pools the service loops-times. You can pass negative number to pool for ever
+     */
+    public void pool(int loops) throws InterruptedException, IOException {
         Db db = new Db();
         //exercise - 5 minutes; but check last 6 minutes and check against db as there oculd be loan in the few milisicends the request took
-        while (true) {
+        while (loops < 0 || loops > 0) {
+            if (loops > 0) {
+                loops--;
+            }
             Provider provider = Provider.create(baseUrl, delay + 60);
             Loan[] loans = provider.readLoans();
             out.println(new Date() + ": " + loans.length + " (unfliltered)");
